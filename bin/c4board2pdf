@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby
+require 'commander/import'
+require 'colorize'
+
+lib = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require 'connect_4_board_as_pdf'
+require 'connect_4_board_as_pdf/version'
+
+DEFAULT_EXTENSION = 'c4b.yaml'
+
+@files_processed = 0
+
+program :name, 'c4board2pdf'
+program :version, Connect4BoardAsPdf::VERSION
+program :description, 'Handy tool for generating PDFs out of board description written down in YAML.'
+
+command :convert do |c|
+  c.syntax = 'c4board2pdf convert'
+  c.description = 'Converts all files in the current directory matching "*.' + DEFAULT_EXTENSION + '". Default task.'
+  c.option '-r', '--recursive', 'Search recursive for files to convert.'
+  c.option '--extension EXTENSION', 'Change the extension a file needs to have in order to match the seach pattern. Default is "' + DEFAULT_EXTENSION + '"'
+  c.action do |args, options|
+    if args.empty?
+      puts 'No target(s) given!'.red
+      puts 'Please run "c4board2pdf help convert" to get regarding this tool\'s usage!'.yellow
+    else
+      options.default recursive: false, extension: DEFAULT_EXTENSION
+
+      args.each do |arg|
+        handle_target arg, options
+      end
+
+      puts "#{@files_processed} file(s) processed!".green
+    end
+  end
+end
+
+default_command :convert
+
+def handle_target(target, options)
+  return unless File.exists?(target)
+
+  if File.directory?(target)
+    files = Array.new
+    if options.recursive
+      files = Dir.glob(File.join(target, "**", "*." + options.extension))
+    else
+      files = Dir.glob(File.join(target, "*." + options.extension))
+    end
+
+    files.each do |file|
+      handle_target(file, options)
+    end
+
+    return  
+  end
+
+  outputFile = File.join(File.dirname(target), File.basename(target, DEFAULT_EXTENSION) + "pdf")
+  Connect4BoardAsPdf.process_file(target, outputFile)
+  @files_processed = @files_processed + 1
+end

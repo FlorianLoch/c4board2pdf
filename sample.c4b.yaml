@@ -1,0 +1,16 @@
+---
+meta:
+ columns: 7
+ rows: 6
+ description: | 
+  This ist just a sample
+  yaml file.
+board:
+ yellow:
+  - A1
+  - A2
+  - A3
+ red:
+  - B1
+  - B2
+  - B3
