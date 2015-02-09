@@ -12,7 +12,7 @@ module Connect4BoardAsPdf
     LINE_WIDTH = 0.5
     Y_SCALE_LABEL_OFFSET = 2
 
-    def self.export_board(board, file)
+    def self.export_board(board, file, config)
       cols = board.get_columns
       rows = board.get_rows
 
