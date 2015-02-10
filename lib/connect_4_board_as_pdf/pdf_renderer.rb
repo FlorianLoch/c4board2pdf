@@ -37,6 +37,8 @@ module Connect4BoardAsPdf
       width = columns * config[:GRID_SIZE] + config[:SCALE_FIXED_SIDE_LENGTH]
       height = rows * config[:GRID_SIZE] + config[:SCALE_FIXED_SIDE_LENGTH] 
 
+      pdf.stroke_color(config[:LINE_COLOR])
+
       pdf.stroke_rectangle([config[:SCALE_FIXED_SIDE_LENGTH], height], columns * config[:GRID_SIZE], rows * config[:GRID_SIZE])
 
       (rows).times do |a|

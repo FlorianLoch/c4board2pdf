@@ -12,12 +12,13 @@ module Connect4BoardAsPdf
       @config = {
         GRID_SIZE: 15,
         COLOR_RED: 'ff232e',
-        COLOR_YELLOW: 'ff0000',
+        COLOR_YELLOW: 'ffd80d',
         FONT_SIZE: 12,
         SCALE_FIXED_SIDE_LENGTH: 15,
         MARGIN: 5,
         FONT_FAMILY: 'Courier',
         LINE_WIDTH: 0.5,
+        LINE_COLOR: "595659",
         Y_SCALE_LABEL_OFFSET: 2      
       }
 
@@ -26,8 +27,6 @@ module Connect4BoardAsPdf
 
     def process_file(file, outputFile)
       board = Connect4Parser.load_board_from_yaml(file)
-
-      p @config
 
       PDFRenderer.export_board(board, outputFile, @config)
     end
