@@ -4,14 +4,22 @@ require 'connect_4_board_as_pdf/pdf_renderer'
 module Connect4BoardAsPdf
   class MainProcessor
     DEFAULT_CONFIG_FILE_NAME = 'c4board2pdf.conf.yaml'
-    @config_file_name
-    @config = {
-
-    }
 
     def initialize(config_file_name)
       @config_file_name = config_file_name
       @config_file_name ||= DEFAULT_CONFIG_FILE_NAME
+
+      @config = {
+        GRID_SIZE: 15,
+        COLOR_RED: 'ff232e',
+        COLOR_YELLOW: 'ff0000',
+        FONT_SIZE: 12,
+        SCALE_FIXED_SIDE_LENGTH: 15,
+        MARGIN: 5,
+        FONT_FAMILY: 'Courier',
+        LINE_WIDTH: 0.5,
+        Y_SCALE_LABEL_OFFSET: 2      
+      }
 
       load_config
     end
@@ -24,8 +32,17 @@ module Connect4BoardAsPdf
 
     private 
     def load_config()
-      return unless File.exists?(@config_file_name)
+      path = File.join(Dir.pwd, @config_file_name)
 
+      return unless File.exists?(path)
+
+      config = YAML.load_file(path);
+
+      @config.each_key do |key|
+        next if config[key].nil?
+
+        @config[key] = config[key]
+      end
     end
   end
 end
