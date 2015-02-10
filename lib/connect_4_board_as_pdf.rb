@@ -27,6 +27,8 @@ module Connect4BoardAsPdf
     def process_file(file, outputFile)
       board = Connect4Parser.load_board_from_yaml(file)
 
+      p @config
+
       PDFRenderer.export_board(board, outputFile, @config)
     end
 
@@ -39,9 +41,9 @@ module Connect4BoardAsPdf
       config = YAML.load_file(path);
 
       @config.each_key do |key|
-        next if config[key].nil?
+        next if config[key.to_s].nil?
 
-        @config[key] = config[key]
+        @config[key] = config[key.to_s]
       end
     end
   end
