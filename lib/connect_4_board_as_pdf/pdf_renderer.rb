@@ -55,7 +55,7 @@ module Connect4BoardAsPdf
     def self.draw_allocation(pdf, board, columns, rows, config)
       columns.times do |a|
         rows.times do |b|
-          column = (a + 64).chr
+          column = (a + 65).chr
           row = b + 1
           color = board.get_position(column + row.to_s)
 
